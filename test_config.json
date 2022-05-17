@@ -1,0 +1,38 @@
+{
+  "name": "FaceMaskClassification_evaluation",
+  "n_gpu": 1,
+  "arch": {
+    "type": "PretrainedModel",
+    "args": {
+        "model_age":{
+            "classifier_target": "age",
+            "model_name": "efficientnet_b1"
+        },
+        "model_mask":{
+            "classifier_target": "mask",
+            "model_name": "efficientnet_b1"
+        },
+        "model_gender":{
+            "classifier_target": "gender",
+            "model_name": "efficientnet_b1"
+        }
+    }
+  },
+  "data_loader": {
+    "type": "FaceMaskDataLoader",
+    "args": {
+      "data_dir": "/opt/ml/input/data/eval/images",
+      "csv_path": "/opt/ml/input/data/eval/info_temp.csv",
+      "batch_size": 16,
+      "shuffle": false,
+      "validation_split": 0.0,
+      "num_workers": 1,
+      "img_resize": 224,
+      "training_mode": false
+    }
+  },
+  "run_id": "test",
+  "model_age_checkpoint": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/age/checkpoint-epoch20.pth",
+  "model_gender_checkpoint": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender/checkpoint-epoch3.pth",
+  "model_mask_checkpoint": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/mask/checkpoint-epoch2.pth"
+}

@@ -1,0 +1,55 @@
+{
+  "name": "Version3",
+  "n_gpu": 1,
+  "mode": "single",
+  "arch": {
+    "type": "PretrainedModel",
+    "args": {
+        "classifier_target": "binary_60",
+        "model_name": "densenet161"
+    }
+  },
+  "resume_dir": "/opt/ml/code/BaseTemplate/saved/models/Version3/age_densenet161_3_v2",
+  "data_loader": {
+    "type": "FaceMaskDataLoader",
+    "args": {
+      "data_dir": "none",
+      "csv_path": "/opt/ml/code/BaseTemplate/data/FaceMaskClassification/train/binary_60_2.csv",
+      "batch_size": 32,
+      "shuffle": true,
+      "validation_split": 0.2,
+      "num_workers": 1,
+      "img_resize": 224,
+      "training_mode": true,
+      "KFold_samplers_path": "/opt/ml/code/BaseTemplate/data/FaceMaskClassification/train/KFold_samplers6",
+      "Fold_num": 2
+    }
+  },
+  "optimizer": {
+    "type": "SGD",
+    "args": {
+      "lr": 0.01,
+      "momentum": 0.9,
+      "weight_decay": 0.001
+    }
+  },
+  "loss": "focal_loss",
+  "metrics": ["accuracy", "f1_score"],
+  "lr_scheduler": {
+    "type": "StepLR",
+    "args": {
+        "step_size": 4,
+        "gamma": 0.15
+    }
+  },
+  "trainer": {
+    "epochs": 20,
+    "save_dir": "saved/",
+    "save_period": 1,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 20,
+    "tensorboard": false
+  },
+  "run_id": "binary_60_K1"
+}

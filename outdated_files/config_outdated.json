@@ -1,0 +1,78 @@
+{
+  "name": "Version2",
+  "n_gpu": 1,
+  "mode": "single",
+  "arch": {
+    "type": "PretrainedModel",
+    "args": {
+        "classifier_target": "age",
+        "model_name": "resnet101"
+    }
+  },
+  "ensemble_age": {
+      "efficientnet_b1": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/age_efficientnet_b1_org/checkpoint-epoch9.pth",
+      "resnext50_32x4d": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/age_resnext50_32x4d_org/checkpoint-epoch18.pth",
+      "regnet_x_32gf": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/age_regnet_x_32gf_org/checkpoint-epoch19.pth",
+      "num_classes": 3,
+      "best_checkpoint_path": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/age_ensemble/checkpoint-epoch4.pth"
+  },
+  "ensemble_mask": {
+      "efficientnet_b1": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/mask_efficientnet_b1_org/checkpoint-epoch2.pth",
+      "resnext50_32x4d": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/mask_resnext50_32x4d_org/checkpoint-epoch2.pth",
+      "regnet_x_32gf": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/mask_regnet_x_32gf_org/checkpoint-epoch3.pth", "num_classes": 3,
+      "best_checkpoint_path": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/mask_ensemble/checkpoint-epoch2.pth"
+  },
+  "ensemble_gender": {
+      "efficientnet_b1": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender_efficientnet_b1_org/checkpoint-epoch2.pth",
+      "resnext50_32x4d": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender_resnext50_32x4d_org/checkpoint-epoch7.pth",
+      "regnet_x_32gf": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender_regnet_x_32gf_org/checkpoint-epoch7.pth",
+      "num_classes": 3,
+      "best_checkpoint_path": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender_ensemble/checkpoint-epoch13.pth"
+  },
+  "gender_only": {
+      "best_checkpoint_path": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender_only/checkpoint-epoch10.pth"
+  },
+  "resume_dir": "/opt/ml/code/BaseTemplate/saved/models/FaceMaskClassification/gender_ensemble",
+  "data_loader": {
+    "type": "FaceMaskDataLoader",
+    "args": {
+      "data_dir": "none",
+      "csv_path": "/opt/ml/code/BaseTemplate/data/FaceMaskClassification/train/age.csv",
+      "batch_size": 32,
+      "shuffle": true,
+      "validation_split": 0.2,
+      "num_workers": 1,
+      "trsfm_num": 2
+    }
+  },
+  "optimizer": {
+    "type": "Adam",
+    "args": {
+      "lr": 0.001,
+      "weight_decay": 0.001,
+      "amsgrad": true
+    }
+  },
+  "loss": "weighted_cross_entropy_loss",
+  "metrics": ["accuracy"],
+  "lr_scheduler": {
+    "type": "StepLR",
+    "args": {
+      "step_size": 50,
+      "gamma": 0.1
+    }
+  },
+  "trainer": {
+    "epochs": 20,
+
+    "save_dir": "saved/",
+    "save_period": 1,
+    "verbosity": 2,
+
+    "monitor": "min val_loss",
+    "early_stop": 10,
+
+    "tensorboard": false
+  },
+  "run_id": "age_densenet"
+}
